@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MetaFluAD Antigenic Distance Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to MetaFluAD!</h1>
+    <!-- Display flashed messages -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li style="color: red;">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <form method="post" action="/" enctype="multipart/form-data">
+        <label for="query_csv">Upload CSV File with Query Sequences:</label>
+        <input type="file" id="query_csv" name="query_csv" accept=".csv" required>
+
+        <label for="reference_csv">Upload CSV File with Reference Sequence:</label>
+        <input type="file" id="reference_csv" name="reference_csv" accept=".csv" required>
+
+        <button type="submit">Predict</button>
+    </form>
+</body>
+</html>

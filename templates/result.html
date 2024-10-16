@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction Results - MetaFluAD</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            background-color: #f0f0f0;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .result {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #aaa;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Prediction Results</h1>
+    <div class="result">
+        <h2>Reference Strain: {{ reference_strain }}</h2>
+        <table>
+            <tr>
+                <th>Strain</th>
+                <th>Antigenic Distance</th>
+            </tr>
+            {% for item in predictions %}
+            <tr>
+                <td>{{ item.strain }}</td>
+                <td>{{ item.prediction if item.prediction is not none else 'N/A' }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</body>
+</html>
