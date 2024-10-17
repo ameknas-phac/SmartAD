@@ -101,3 +101,6 @@ class metafluad_model():
         data = seqs_to_geom(query_csv, ref_csv)
         output, feature = self.model(data)
         return torch.exp(output.detach()).numpy()
+    
+# model = metafluad_model()
+# dist = model.distances(query_seq, ref_seq)
