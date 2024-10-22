@@ -42,7 +42,7 @@ def home():
             'H1N1': 'model_H1N1.pth',
             'H3N2': 'model_H3N2.pth',
             'H5N1': 'model_H5N1.pth',
-            'Influenza_B': 'model_B-vic.pth.pth',
+            'Influenza_B': 'model_B-vic.pth',
         }
         
         model_file = models.get(virus_type)
