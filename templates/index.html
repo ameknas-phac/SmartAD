@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MetaFluAD Antigenic Distance Predictor</title>
+    <title>SmartAD Antigenic Distance Predictor</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,7 +23,7 @@
             display: block;
             margin-top: 10px;
         }
-        input {
+        input, select {
             width: 100%;
             padding: 8px;
             margin-top: 5px;
@@ -31,11 +31,12 @@
         button {
             margin-top: 20px;
             padding: 10px 20px;
+            display: block; /* Add display block */
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to MetaFluAD!</h1>
+    <h1>Welcome to SmartAD!</h1>
     <!-- Display flashed messages -->
     {% with messages = get_flashed_messages() %}
       {% if messages %}
@@ -53,6 +54,15 @@
         <label for="reference_csv">Upload CSV File with Reference Sequence:</label>
         <input type="file" id="reference_csv" name="reference_csv" accept=".csv" required>
 
+        <label for="virus_type">Select Virus Model:</label>
+        <select name="virus_type">
+            <option value="H1N1">H1N1</option>
+            <option value="H3N2">H3N2</option>
+            <option value="H5N1">H5N1</option>
+            <option value="Influenza_B">Influenza B</option>
+        </select>
+
+        <!-- Added margin-top and display: block to the button for spacing -->
         <button type="submit">Predict</button>
     </form>
 </body>

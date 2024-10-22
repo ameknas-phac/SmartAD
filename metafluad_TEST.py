@@ -86,11 +86,15 @@ def seqs_to_geom(query_seq, ref_seq):
     return data
 
 class metafluad_model():
-    def __init__(self):
-        # Load model
+    def __init__(self, model_file):
+        # Load model architecture
         self.model = MetaFluAD()
-        pretrained_dict = torch.load('model_H1N1.pth')
+        
+        # Load the correct pre-trained model file based on the user's selection
+        pretrained_dict = torch.load(model_file)
         model_dict = self.model.state_dict()
+        
+        # Update the model's state dict with the pre-trained weights
         pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
         model_dict.update(pretrained_dict)
         self.model.load_state_dict(model_dict)
