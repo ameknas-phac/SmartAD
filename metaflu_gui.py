@@ -2,7 +2,7 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from werkzeug.utils import secure_filename
 import pandas as pd
-# from model import model_predict  # Import your model prediction function
+from metafluad_TEST import metafluad_model
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Needed for flashing messages
@@ -60,7 +60,6 @@ def home():
                 flash('Query CSV must have "strain" and "sequence" columns.')
                 return redirect(url_for('home'))
             query_strains = query_df['strain'].tolist()
-            query_sequences = query_df['sequence'].tolist()
 
             # Read the reference sequence and strain name
             reference_df = pd.read_csv(reference_filepath)
@@ -68,15 +67,15 @@ def home():
                 flash('Reference CSV must have "strain" and "sequence" columns.')
                 return redirect(url_for('home'))
             reference_strain = reference_df['strain'].tolist()[0]
-            reference_sequence = reference_df['sequence'].tolist()[0]
 
-            # Perform predictions
+            # Use Adam's MetaFluAD model to compute the distances
+            model = metafluad_model()  # Instantiate the model
+            distances = model.distances(query_filepath, reference_filepath)  # Get antigenic distances
+
+            # Prepare predictions with strains and their distances
             predictions = []
-            for strain, seq in zip(query_strains, query_sequences):
-                # Replace with your actual prediction logic
-                # prediction = model_predict(seq, reference_sequence)
-                prediction = compute_antigenic_distance(seq, reference_sequence)
-                predictions.append({'strain': strain, 'prediction': prediction})
+            for strain, distance in zip(query_strains, distances):
+                predictions.append({'strain': strain, 'prediction': distance})
 
             # Pass results to the result template
             return render_template('result.html', predictions=predictions, reference_strain=reference_strain)
@@ -85,18 +84,6 @@ def home():
             return redirect(url_for('home'))
 
     return render_template('index.html')
-
-# Placeholder function for antigenic distance calculation
-def compute_antigenic_distance(seq1, seq2):
-    # Check if sequences are of the same length, otherwise skip prediction
-    if len(seq1) != len(seq2):
-        return None  # Return None for sequences of different lengths
-    distance = hamming_distance(seq1, seq2)
-    return distance
-
-def hamming_distance(seq1, seq2):
-    # Ensure sequences are of equal length
-    return sum(c1 != c2 for c1, c2 in zip(seq1, seq2))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
