@@ -1,0 +1,18 @@
+name: smartad_env
+channels:
+  - defaults
+  - conda-forge
+  - pyg
+dependencies:
+  - python=3.10
+  - flask=3.0.3
+  - werkzeug=3.0.4
+  - numpy=2.1.2
+  - pandas=2.2.3
+  - scipy=1.14.1
+  - pytorch=2.4.1
+  - pytorch_geometric=2.1.0
+  - pytorch_scatter=2.1.2
+  - scikit-learn=1.5.2
+  - requests=2.32.3
+  - tqdm
