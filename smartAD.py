@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import os
 import pandas as pd
-from metafluad_TEST import metafluad_model 
+from metafluad_TEST import metafluad_model
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
