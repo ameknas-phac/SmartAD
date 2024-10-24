@@ -1,4 +1,4 @@
-[![Render](https://img.shields.io/badge/OnRender-Deployed-9b59b6?logo=cloud&logoColor=white)](https://smartad-latest.onrender.com/)
+[![Render](https://img.shields.io/badge/OnRender-Deployed-9b59b6?logo=cloud&logoColor=white)](https://smartad-latest.onrender.com)
 [![Docker](https://img.shields.io/badge/Docker-Pull%20Image-1abc9c?logo=docker&logoColor=white)](https://hub.docker.com/r/ameknas/smartad)
 
 # SmartAD: Predicting Antigenic Distances of Influenza Viruses
