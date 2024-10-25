@@ -2,6 +2,7 @@ import torch
 import csv
 import numpy as np
 import pandas as pd
+import gc
 from torch_geometric.data import Data
 # Import MetaFluAD models
 from metafluad_models import MetaFluAD
@@ -100,11 +101,15 @@ class metafluad_model():
         self.model.load_state_dict(model_dict)
     
     def distances(self, query_csv, ref_csv):
-        # Predict distance of every sequence to the reference sequence
-        self.model.eval()
-        data = seqs_to_geom(query_csv, ref_csv)
-        output, feature = self.model(data)
-        return torch.exp(output.detach()).numpy()
+        # Predict distances of every sequence to the reference sequence
+        with torch.no_grad():  # Prevents PyTorch from building the computation graph
+            data = seqs_to_geom(query_csv, ref_csv)
+            output, _ = self.model(data)
+            result = torch.exp(output).numpy()
+        # Clean up to free memory
+        del data, output
+        gc.collect()
+        return result
     
 # model = metafluad_model()
 # dist = model.distances(query_seq, ref_seq)

@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import os
+import gc
 import pandas as pd
 from metafluad_TEST import metafluad_model
 
@@ -66,10 +67,18 @@ def home():
             # Prepare predictions and render the result page
             predictions = [{'strain': strain, 'prediction': distance} for strain, distance in zip(query_strains, distances)]
             return render_template('result.html', predictions=predictions, reference_strain=reference_strain)
-        
+            # Clear the DataFrames after processing to free up memory
+            del query_df, reference_df
+            gc.collect()  # Explicit garbage collection
         except Exception as e:
             flash(f"An error occurred: {e}")
             return redirect(request.url)
+        finally:
+            # Clean up memory and delete files after processing
+            del query_df, reference_df, model
+            os.remove(query_filename)
+            os.remove(reference_filename)
+            gc.collect()
 
     return render_template('index.html')
 
