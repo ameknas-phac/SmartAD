@@ -32,3 +32,63 @@ MetaFluAD, a cutting-edge tool developed by Qitao Jia, Yuanling Xia, Fanglin Don
 **SmartAD** builds upon this work by using an enhanced version of the MetaFluAD models. The difference lies in the training data: while the original MetaFluAD models were trained on publicly available datasets, the models powering SmartAD have been trained on a more extensive and proprietary dataset maintained by the **Influenza, Respiratory Viruses and Cornoaviruses (IRVC)** section at the **National Microbiology Laboratory (NML)**. This larger dataset provides a deeper and broader understanding of antigenic distances across a wider variety of influenza strains, leading to more accurate predictions.
 
 In essence, SmartAD leverages the power of machine learning models to help researchers and public health officials understand how different influenza strains might interact with human immunity, guiding better vaccine formulation and public health strategies.
+
+---
+
+## Installation
+
+### Docker Image
+
+#### Command Line
+
+To install and run **SmartAD** via Docker using the command line, follow these steps:
+
+1. **Pull the Docker Image**
+   ```bash
+   docker pull ameknas/smartad:latest
+   ```
+   
+2. **Run the Docker Container**
+   ```bash
+   docker run -p 5000:5000 ameknas/smartad:latest
+   ```
+   
+3. **Access the Application**
+   - Open your web browser and navigate to:
+     ```
+     http://localhost:5000
+     ```
+   - This will open the **SmartAD** web interface where you can begin using the application.
+
+### Docker Desktop
+
+For users with Docker Desktop, you can pull and run the **SmartAD** container directly from the Docker Desktop interface:
+
+1. **Open Docker Desktop**  
+   *(Placeholder: Insert image of Docker Desktop main screen)*
+
+2. **Search for the SmartAD Image**
+   - In the **Images** tab, locate the "Search for images on Docker Hub" field.
+   - Type `ameknas/smartad` to find the SmartAD image.
+   - *(Placeholder: Insert image showing Docker Hub search field and locating SmartAD image)*
+
+3. **Pull the Image**
+   - Select the **Pull** option to download the latest image to your Docker Desktop.
+   - *(Placeholder: Insert image of Docker Desktop’s pull option)*
+
+4. **Run the Container**
+   - After the image has been pulled, locate it under the **Images** tab in Docker Desktop.
+   - Click **Run** next to the image name.
+   - Configure the **port mapping** to `5000:5000` so you can access the application on `localhost:5000`.
+   - *(Placeholder: Insert image of container configuration with port mapping)*
+
+5. **Access the Application**
+   - Open your web browser and navigate to:
+     ```
+     http://localhost:5000
+     ```
+   - This will take you to the **SmartAD** web interface, where you can begin using the application.
+
+*(Placeholder: Insert image of SmartAD app interface in browser)*
+
+By following these steps, you can easily install and run **SmartAD** using Docker, either through the command line or Docker Desktop, and access it directly from your browser.
