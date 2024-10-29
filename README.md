@@ -159,3 +159,29 @@ Using **SmartAD** is straightforward. Follow the steps below to predict antigeni
 
 By following these steps, you can use **SmartAD** to analyze antigenic distances between different influenza strains with ease.
 
+---
+
+## Available Models
+
+**SmartAD** provides several pre-trained models specifically tailored for different influenza strains. These models allow for accurate antigenic distance predictions based on the selected strain type. Below are the currently available models:
+
+- **H1N1**: Uses the `model_H1N1.pth` file, designed for the H1N1 strain of Influenza A.
+- **H3N2**: Uses the `model_H3N2.pth` file, tailored for the H3N2 strain of Influenza A.
+- **H5N1**: Uses the `model_H5N1.pth` file, optimized for the H5N1 strain of Influenza A.
+- **Influenza B**: Uses the `model_B-vic.pth` file, specifically developed for Influenza B (Victoria lineage).
+
+Each model has been trained to predict antigenic distances with high accuracy based on comprehensive datasets. Select the appropriate model from the dropdown menu to match the strain type of your input sequences.
+
+---
+
+## Contributing
+
+This project is produced by **IRVC (Influenza, Respiratory Viruses and Cornoaviruses)** personnel at **PHAC (Public Health Agency of Canada)**
+
+---
+
+## License
+
+This project is licensed under the **Apache License 2.0**. You are free to use, modify, and distribute this software in compliance with the license.
+
+For more details, refer to the full text of the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
