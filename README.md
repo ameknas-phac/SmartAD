@@ -8,10 +8,9 @@
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Installation](#installation)
-3. [Usage](#usage)
-4. [Available Models](#available-models)
-5. [How SmartAD Works](#how-smartad-works)
-6. [Data Input Format](#data-input-format)
+3. [Data Input Format](#data-input-format)
+4. [Usage](#usage)
+5. [Available Models](#available-models)
 7. [Contributing](#contributing)
 8. [License](#license)
 
@@ -94,3 +93,44 @@ For users with Docker Desktop, you can pull and run the **SmartAD** container di
 ![SmartAD App Interface in Browser](images/smartad_browser_interface.png)
 
 By following these steps, you can easily install and run **SmartAD** using Docker, either through the command line or Docker Desktop, and access it directly from your browser.
+
+---
+
+## Data Input Format
+
+For **SmartAD** to predict antigenic distances, it requires input data in the form of amino acid sequences for query and reference strains. Here’s the format required for each input file:
+
+### Query Sequences
+
+The query sequences file should contain multiple amino acid sequences with their corresponding strain IDs. The file format should be **CSV** and include two columns: `strain` and `sequence`. The `strain` column contains the unique identifier for each strain, and the `sequence` column contains the amino acid sequence. 
+
+**Example Format:**
+
+```csv
+strain,sequence
+StrainA,DTLCIGYHANNSTDTVDTVLEKNVTVTHSVNLLEDKHNGKLCKLRGVP
+StrainB,DTLCIGYHANNSTDTVDTVLEKNVTVTHSVNLLEDKHNGKLCKLRGVAPLHL
+StrainC,DTLCIGYHANNSTDTVDTVLEKNVTVTHSVNLLEDKHNGKLCKLRGVA
+StrainD,DTLCIGYHANNSTDTVDTVLEKNVTVTHSVNLLEDKHNGKLCKLRGV
+StrainE,DTLCIGYHANNSTDTVDTVLEKNVTVTHSVNLLEDKHNGKLCKLRGVAPLHLG
+StrainF,DTLCIGYHANNSTDTVDTVLEKNVTVTHSVNLLEDKHNGKLCKLRGVPPLHLG
+```
+
+### Reference Sequence
+
+The reference sequence file should include a single amino acid sequence with its corresponding strain ID. This file should also be in **CSV** format with two columns: `strain` and `sequence`. 
+
+**Example Format:**
+
+```csv
+strain,sequence
+Reference,DTLCIGYHANNSTDTVDTVLEKNVTVTHSVNLLEDKHNGKLCKLRGVP
+```
+
+### Notes:
+- Both files should be saved with a `.csv` extension.
+- Each sequence should be composed of valid amino acid letters without any special characters.
+- Ensure that your reference sequence file only contains one row.
+
+Using this format will allow **SmartAD** to process the data effectively for antigenic distance predictions.
+
