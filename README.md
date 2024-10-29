@@ -134,3 +134,28 @@ Reference,DTLCIGYHANNSTDTVDTVLEKNVTVTHSVNLLEDKHNGKLCKLRGVP
 
 Using this format will allow **SmartAD** to process the data effectively for antigenic distance predictions.
 
+---
+
+## Usage
+
+Using **SmartAD** is straightforward. Follow the steps below to predict antigenic distances between influenza strains:
+
+1. **Upload Query Sequences**  
+   - Click **Choose File** next to "Upload CSV File with Query Sequences."
+   - Select your query sequences CSV file, which contains multiple strain IDs and their amino acid sequences.
+
+2. **Upload Reference Sequence**  
+   - Click **Choose File** next to "Upload CSV File with Reference Sequence."
+   - Select your reference sequence CSV file, which should contain a single strain ID and its amino acid sequence.
+
+3. **Select Virus Model**  
+   - From the dropdown menu labeled "Select Virus Model," choose the appropriate model for your analysis (e.g., H1N1, H3N2, etc.).
+
+4. **Run Prediction**  
+   - Click the **Predict** button to start the analysis. 
+
+5. **View Results**  
+   - After processing, you’ll be redirected to a results page displaying the predicted antigenic distances. Here, you can review and interpret the outcomes.
+
+By following these steps, you can use **SmartAD** to analyze antigenic distances between different influenza strains with ease.
+
