@@ -92,7 +92,14 @@ For users with Docker Desktop, you can pull and run the **SmartAD** container di
 
 ![SmartAD App Interface in Browser](images/smartad_browser_interface.png)
 
-By following these steps, you can easily install and run **SmartAD** using Docker, either through the command line or Docker Desktop, and access it directly from your browser.
+### Accessing the Deployed Web Application on OnRender
+
+You can also access **SmartAD** through clicking the link to the web application deployed on [OnRender](https://smartad-web.onrender.com). Note the following when using the OnRender deployment:
+   - It may take **2-3 minutes to load** the initial page.
+   - Generating predictions may take an additional **2-3 minutes**.
+   - The free-tier deployment has **limited memory capacity**, which may impact performance for larger jobs.
+
+By following these steps, you can easily install and run **SmartAD** using Docker, either through the command line, Docker Desktop or OnRender, and access it directly from your browser.
 
 ---
 
