@@ -1,21 +1,37 @@
-# Use an official Miniconda runtime as a parent image
-FROM continuumio/miniconda3
+# Use a slim Python base image
+FROM python:3.10-slim
 
-# Set the working directory in the container
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set work directory
 WORKDIR /app
 
-# Copy the contents from /home/ameknas/SmartAD/ to /app inside the container
+# Copy and install Python dependencies
+COPY requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+# Install torch-scatter and torch-geometric with the correct PyTorch version
+# Replace 'cpu' with your CUDA version if needed (e.g., 'cu118' for CUDA 11.8)
+RUN pip install torch-scatter==2.1.2 -f https://data.pyg.org/whl/torch-2.4.1+cpu.html
+RUN pip install torch-sparse
+RUN pip install torch-geometric==2.1.0
+
+# Copy application code and models
 COPY . /app
 
-# Create a new environment named 'smartad_env' and install dependencies from environment.yml
-COPY environment.yml /app/environment.yml
-RUN conda env update --name smartad_env --file /app/environment.yml --prune
-
-# Make sure the environment is activated when using CMD
-SHELL ["conda", "run", "-n", "smartad_env", "/bin/bash", "-c"]
-
-# Expose the port that Flask will run on
+# Expose port
 EXPOSE 5000
 
-# Command to run your Flask app in smartAD.py located inside /app
-CMD ["conda", "run", "-n", "smartad_env", "python", "/app/smartAD.py"]
+# Install Gunicorn
+RUN pip install gunicorn
+
+# Start the application with Gunicorn
+CMD ["gunicorn", "smartAD:app", "--bind", "0.0.0.0:5000", "--workers", "1", "--timeout", "360"]

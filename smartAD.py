@@ -67,15 +67,17 @@ def home():
             # Prepare predictions and render the result page
             predictions = [{'strain': strain, 'prediction': distance} for strain, distance in zip(query_strains, distances)]
             return render_template('result.html', predictions=predictions, reference_strain=reference_strain)
-            # Clear the DataFrames after processing to free up memory
-            del query_df, reference_df
-            gc.collect()  # Explicit garbage collection
         except Exception as e:
             flash(f"An error occurred: {e}")
             return redirect(request.url)
         finally:
             # Clean up memory and delete files after processing
-            del query_df, reference_df, model
+            if query_df is not None:
+                del query_df
+            if reference_df is not None:
+                del reference_df
+            if model is not None:
+                del model
             os.remove(query_filename)
             os.remove(reference_filename)
             gc.collect()

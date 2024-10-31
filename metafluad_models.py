@@ -476,6 +476,7 @@ class TransformerModel(nn.Module):
             nn.TransformerEncoderLayer(d_model=input_dim, nhead=num_heads,
                                        dim_feedforward=hidden_dim,
                                        dropout=0.2, activation='relu',
+                                       batch_first=True,
                                        # normalize_before=True
                                        )
         self.transformer = nn.TransformerEncoder(

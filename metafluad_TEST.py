@@ -92,7 +92,7 @@ class metafluad_model():
         self.model = MetaFluAD()
         
         # Load the correct pre-trained model file based on the user's selection
-        pretrained_dict = torch.load(model_file)
+        pretrained_dict = torch.load(model_file, weights_only=True)
         model_dict = self.model.state_dict()
         
         # Update the model's state dict with the pre-trained weights
