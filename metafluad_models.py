@@ -457,20 +457,20 @@ class TransformerModel(nn.Module):
         #
         #
         """
-        编码器   nn.TransformerEncoder
-        encoder_layer：用于构造编码器层的类，默认为 nn.TransformerEncoderLayer。
-        num_layers：编码器层的数量。默认值为 6。
-        norm：归一化模块的类，用于在每个编码器层之间进行归一化，默认为 nn.LayerNorm。
-        batch_first：输入张量是否以 batch 维度为第一维。默认为 False。
-        dropout：每个编码器层输出之前的 dropout 概率。默认值为 0.1
+        Encoder: nn.TransformerEncoder
+        encoder_layer: The class used to construct the encoder layer, defaulting to nn.TransformerEncoderLayer.
+        num_layers: The number of encoder layers. Default is 6.
+        norm: The normalization module class, used to normalize between each encoder layer, defaulting to nn.LayerNorm.
+        batch_first: Whether the input tensor has the batch dimension as the first dimension. Default is False.
+        dropout: The dropout probability before each encoder layer’s output. Default is 0.1.
 
-        编码器层  nn.TransformerEncoderLayer
-        d_model：输入特征的维度和输出特征的维度。默认值为 512。
-        nhead：多头注意力的头数。默认值为 8。
-        dim_feedforward：前馈神经网络的隐藏层大小。默认值为 2048。
-        dropout：每个子层输出之前的 dropout 概率。默认值为 0.1。
-        activation：前馈神经网络中使用的激活函数类型。默认值为 'relu'。
-        normalize_before：是否在每个子层之前进行层归一化。默认值为 False。
+        Encoder Layer: nn.TransformerEncoderLayer
+        d_model: The dimension of input features and output features. Default is 512.
+        nhead: The number of heads in the multi-head attention mechanism. Default is 8.
+        dim_feedforward: The size of the hidden layer in the feedforward neural network. Default is 2048.
+        dropout: The dropout probability before each sub-layer’s output. Default is 0.1.
+        activation: The type of activation function used in the feedforward neural network. Default is 'relu'.
+        normalize_before: Whether to apply layer normalization before each sub-layer. Default is False.
         """
         self.transformer_encoder_layer = \
             nn.TransformerEncoderLayer(d_model=input_dim, nhead=num_heads,
@@ -493,8 +493,8 @@ class TransformerModel(nn.Module):
         x = self.transformer(x)
         x = F.relu(x + se)
         x = self.transformer(x)
-        # x = x.squeeze(1)  # 去除序列长度为1的维度
-        # x = self.fc(x + se)  # 将Transformer的输出转换为256维向量
+        # x = x.squeeze(1)  # Remove dimensions with a sequence length of 1
+        # x = self.fc(x + se)  # Convert Transformer output to a 256-dimensional vector
         x = self.dropout1(x)
         x = self.fc(x)
         # x = F.relu(x+se)
@@ -504,10 +504,10 @@ class TransformerModel(nn.Module):
     def forward(self, x):
         input = self.fc1(x)
         # x: (batch_size, sequence_length, input_size)
-        x = x.transpose(0, 1)  # 将序列长度放到第一维，变成 (sequence_length, batch_size, input_size)
-        x = self.transformer(x)  # Transformer 编码器
+        x = x.transpose(0, 1)  # Move sequence length to the first dimension, becomes (sequence_length, batch_size, input_size)
+        x = self.transformer(x)  # Transformer encoder
 
-        x = x.transpose(0, 1)  # 将序列长度放回到第二维，变成 (batch_size, sequence_length, input_size)
+        x = x.transpose(0, 1)  # Move sequence length back to the second dimension, becomes (batch_size, sequence_length, input_size)
         x = F.relu(x + input)
         # x = x + input
         # x = self.norm(x)
