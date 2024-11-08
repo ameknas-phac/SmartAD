@@ -110,6 +110,6 @@ class metafluad_model():
         del data, output
         gc.collect()
         return result
-    
+
 # model = metafluad_model()
 # dist = model.distances(query_seq, ref_seq)
