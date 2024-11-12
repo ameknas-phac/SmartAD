@@ -99,6 +99,7 @@ class metafluad_model():
         pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
         model_dict.update(pretrained_dict)
         self.model.load_state_dict(model_dict)
+        self.model.eval()
     
     def distances(self, query_csv, ref_csv):
         # Predict distances of every sequence to the reference sequence
