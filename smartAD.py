@@ -1,7 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+import torch
+import numpy as np
+import random
 import os
 import gc
 import pandas as pd
+from flask import Flask, render_template, request, redirect, url_for, flash
 from metafluad_TEST import metafluad_model
 
 app = Flask(__name__)
@@ -15,8 +18,23 @@ ALLOWED_EXTENSIONS = {'csv'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def set_seed():
+    """Set random seed for reproducibility on each request."""
+    seed = 42
+    torch.manual_seed(seed)
+    np.random.seed(seed)
+    random.seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
+    # Set the seed at the beginning of each request
+    set_seed()
+
     if request.method == 'POST':
         query_file = request.files['query_csv']
         reference_file = request.files['reference_csv']
