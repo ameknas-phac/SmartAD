@@ -4,8 +4,9 @@ import random
 import os
 import gc
 import pandas as pd
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file
 from metafluad_TEST import metafluad_model
+import csv
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -38,6 +39,7 @@ def home():
     if request.method == 'POST':
         query_file = request.files['query_csv']
         reference_file = request.files['reference_csv']
+        csv_only = request.form.get('csv_only')  # Get the CSV-only checkbox value
         
         # Validate file uploads
         if query_file.filename == '' or not allowed_file(query_file.filename):
@@ -53,8 +55,9 @@ def home():
         query_file.save(query_filename)
         reference_file.save(reference_filename)
 
-        # Retrieve selected virus model from form
+        # Retrieve selected virus model and batch size from the form
         virus_type = request.form.get('virus_type')
+        batch_size = int(request.form.get('batch_size', 10))  # Default to 10 if not provided
 
         # Load the correct model based on the selection
         models = {
@@ -76,17 +79,31 @@ def home():
             # Initialize and load the selected model
             model = metafluad_model(model_file)  # Pass the selected model file to the model class
             
-            # Use the model to predict distances
+            # Use the model to predict distances with the user-defined batch size
             query_df = pd.read_csv(query_filename)
             reference_df = pd.read_csv(reference_filename)
             query_strains = query_df['strain'].tolist()
             reference_strain = reference_df['strain'].tolist()[0]
 
-            distances = model.distances(query_filename, reference_filename)
+            distances = model.distances(query_filename, reference_filename, batch_size=batch_size)
 
-            # Prepare predictions and render the result page
+            # Prepare predictions and save as CSV file
             predictions = [{'strain': strain, 'prediction': distance} for strain, distance in zip(query_strains, distances)]
-            return render_template('result.html', predictions=predictions, reference_strain=reference_strain)
+            csv_file_path = os.path.join(app.config['UPLOAD_FOLDER'], "predictions.csv")
+            with open(csv_file_path, 'w', newline='') as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=["strain", "prediction"])
+                writer.writeheader()
+                writer.writerows(predictions)
+
+            # Render result page with conditionally displayed table
+            return render_template(
+                'result.html', 
+                predictions=predictions, 
+                reference_strain=reference_strain, 
+                csv_file="predictions.csv", 
+                csv_only=csv_only
+            )
+        
         except Exception as e:
             flash(f"An error occurred: {e}")
             return redirect(request.url)
@@ -103,6 +120,11 @@ def home():
             gc.collect()
 
     return render_template('index.html')
+
+@app.route('/download/<filename>')
+def download_file(filename):
+    """Route to download the generated CSV file."""
+    return send_file(os.path.join(app.config['UPLOAD_FOLDER'], filename), as_attachment=True)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

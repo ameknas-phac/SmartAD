@@ -64,6 +64,20 @@
             <option value="H3N2-IRVC-NEW">H3N2-IRVC-NEW</option>
         </select>
 
+        <!-- New Dropdown for Batch Size -->
+        <label for="batch_size">Select Batch Size:</label>
+        <select name="batch_size" id="batch_size">
+            <option value="10">10</option>
+            <option value="50">50</option>
+            <option value="500">500</option>
+            <option value="1000">1000</option>
+            <!-- Add more options as needed -->
+        </select>
+
+        <!-- Add a checkbox for CSV only option -->
+        <label for="csv_only">Download CSV only (no table display):</label>
+        <input type="checkbox" id="csv_only" name="csv_only" value="yes">
+
         <!-- Added margin-top and display: block to the button for spacing -->
         <button type="submit">Predict</button>
     </form>

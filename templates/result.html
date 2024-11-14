@@ -42,6 +42,9 @@
     <h1>Prediction Results</h1>
     <div class="result">
         <h2>Reference Strain: {{ reference_strain }}</h2>
+        
+        {% if not csv_only %}
+        <!-- Display table only if csv_only is not checked -->
         <table>
             <tr>
                 <th>Strain</th>
@@ -54,6 +57,10 @@
             </tr>
             {% endfor %}
         </table>
+        {% endif %}
+        
+        <!-- Download link for CSV file -->
+        <a href="{{ url_for('download_file', filename=csv_file) }}">Download Results as CSV</a>
     </div>
     <a href="{{ url_for('home') }}">Back to Home</a>
 </body>

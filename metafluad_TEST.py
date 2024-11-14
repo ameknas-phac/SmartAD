@@ -101,16 +101,52 @@ class metafluad_model():
         self.model.load_state_dict(model_dict)
         self.model.eval()
     
-    def distances(self, query_csv, ref_csv):
-        # Predict distances of every sequence to the reference sequence
-        with torch.no_grad():  # Prevents PyTorch from building the computation graph
-            data = seqs_to_geom(query_csv, ref_csv)
-            output, _ = self.model(data)
-            result = torch.exp(output).numpy()
-        # Clean up to free memory
-        del data, output
-        gc.collect()
-        return result
+    def distances(self, query_csv, ref_csv, batch_size=10):
+        """
+        Predict distances of each sequence to the reference sequence in batches.
+        """
+        # Process sequences in batches
+        results = []
+        rows = create_3gram2(query_csv, ref_csv)
+        total_sequences = len(rows)
+        
+        for start in range(0, total_sequences, batch_size):
+            end = min(start + batch_size, total_sequences)
+            batch_rows = rows[start:end]
+            
+            # Prepare batch data
+            batch_data = self.prepare_batch_data(batch_rows, ref_csv)
+            
+            # Run model inference on the batch
+            with torch.no_grad():
+                output, _ = self.model(batch_data)
+                batch_result = torch.exp(output).numpy()
+                
+            # Collect results from batch
+            results.extend(batch_result)
+            
+            # Clean up to free memory
+            del batch_data, output
+            gc.collect()
+        
+        return results
+    
+    def prepare_batch_data(self, batch_rows, ref_csv):
+        """
+        Prepares data for a batch, converting sequences to 3-grams and vectors.
+        """
+        HA_vec = _3gramtovec2(batch_rows, 'protVec_100d_3grams.csv')
+        x = load_x(HA_vec)
+        HA_id = list(HA_vec.keys())
+        ref_ind = 0
+        
+        # Create an edge from each node to the reference node
+        src = torch.Tensor(np.repeat(ref_ind, len(x) - 1))
+        dst = torch.Tensor(np.array([i for i in range(len(x)) if i != ref_ind]))
+        edge_index = torch.stack([src, dst]).to(torch.int64)
+        
+        # Return Torch Geometric Data type for batch
+        return Data(x=x, edge_index=edge_index, HA_id=HA_id)
 
 # model = metafluad_model()
 # dist = model.distances(query_seq, ref_seq)
