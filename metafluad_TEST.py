@@ -5,7 +5,7 @@ import pandas as pd
 import gc
 from torch_geometric.data import Data
 # Import MetaFluAD models
-from metafluad_models import MetaFluAD
+from metafluad_models import MetaFluAD, Smart_tiny
 
 def create_3gram2(query_seq, ref_seq):
     """
@@ -89,7 +89,10 @@ def seqs_to_geom(query_seq, ref_seq):
 class metafluad_model():
     def __init__(self, model_file):
         # Load model architecture
-        self.model = MetaFluAD()
+        if "Smart_tiny" in model_file:
+            self.model = Smart_tiny()
+        else:
+            self.model = MetaFluAD()
         
         # Load the correct pre-trained model file based on the user's selection
         pretrained_dict = torch.load(model_file, weights_only=True)

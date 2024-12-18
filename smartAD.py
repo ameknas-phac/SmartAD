@@ -65,8 +65,7 @@ def home():
             'H3N2': 'model_H3N2.pth',
             'H5N1': 'model_H5N1.pth',
             'Influenza_B': 'model_B-vic.pth',
-            'H3N2-IRVC': 'SmartAD_H3N2.pth',
-            'H3N2-IRVC-NEW': 'SmartAD_H3N2_new.pth',
+            'H3N2-IRVC': 'Smart_tiny_H3N2.pth',
         }
         
         model_file = models.get(virus_type)
